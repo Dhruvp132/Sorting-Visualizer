@@ -1,0 +1,17 @@
+.array-container {
+    display: flex;
+    transform: scaleY(-1);
+    flex-wrap: wrap;
+    left : 100px;
+}
+
+.rotate {
+  } 
+.array-bar { 
+    width : 1px;
+    flex-grow: 1;
+    flex-basis : 200;
+    background-color: turquoise ;
+    display: inline-block;
+    margin : 0 1px;
+}
