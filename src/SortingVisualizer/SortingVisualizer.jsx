@@ -3,7 +3,7 @@ import {getMergeSortAnimations, getBubbleSortAnimation} from '../sortingAlgorith
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 1;
+let ANIMATION_SPEED_MS = 1;
 
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS = 300;
@@ -68,6 +68,7 @@ export class SortingVisualizer extends Component {
 
 
   bubbleSort() {
+    ANIMATION_SPEED_MS = 10;
     const animations = getBubbleSortAnimation(this.state.array)
     console.log(animations)
     for(let i=0; i<animations.length; i++) {

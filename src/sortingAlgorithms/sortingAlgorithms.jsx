@@ -80,7 +80,7 @@ export function getMergeSortAnimations(array) {
   // ==== Work in progress ========
   function bubbleSortHelper( startIdx, endIdx, mainArray, animations){
     for(let i=startIdx; i<endIdx-1; i++) {
-      for(let j=0; j<endIdx-1; j++) {
+      for(let j=i; j<endIdx-1; j++) {
         animations.push([j, j+1])
         animations.push([j, j+1])
         if (mainArray[j]>mainArray[j+1]){
