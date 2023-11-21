@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {getMergeSortAnimations, getBubbleSortAnimation} from '../sortingAlgorithms/sortingAlgorithms'
+import {getMergeSortAnimations, getBubbleSortAnimation, getQuickSortAnimation} from '../sortingAlgorithms/sortingAlgorithms'
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
@@ -13,6 +13,9 @@ const PRIMARY_COLOR = '#00bfff';
 
 // This is the color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'red';
+
+//Pivot Color throughout the animations.
+const PIVOT_COLOR = 'yellow';
 
 export class SortingVisualizer extends Component {
   constructor(props) {
@@ -37,7 +40,7 @@ export class SortingVisualizer extends Component {
 
   //====== Sorting Methods ================
   mergeSort() {
-    const animations = getMergeSortAnimations(this.state.array);
+    const animations = getMergeSortAnimations(this.state.array)
     console.log(animations)
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
@@ -96,6 +99,46 @@ export class SortingVisualizer extends Component {
       }
     }
   }
+
+  quickSort() {
+    const { animations :animations, pivotAnimation : pivotAnimation } = getQuickSortAnimation(this.state.array);
+    ANIMATION_SPEED_MS = 10;
+    console.log(animations)
+    console.log(pivotAnimation)
+    for(let j=0; j<pivotAnimation.length; j++) {
+      const arrayBars = document.getElementsByClassName('array-bar')
+      const pivotIdx = pivotAnimation[j];
+      const pivotStyle = arrayBars[pivotIdx].style;
+      setTimeout(() => {
+        pivotStyle.backgroundColor = PIVOT_COLOR;
+      }, j * ANIMATION_SPEED_MS);
+    }
+    for(let i=0; i<animations.length ; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar')
+      
+      const isColorChange = i % 3 !== 2; // has true or false 
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * ANIMATION_SPEED_MS);
+      } else { 
+        setTimeout(()=> {
+          const [barOneIdx, newHeightOne, barTwoIdx, newHeightTwo ] = animations[i]
+          const barOneStyle = arrayBars[barOneIdx].style//add .style 
+          const barTwoStyle = arrayBars[barTwoIdx].style //add .style 
+          barOneStyle.height = `${newHeightOne}px`
+          barTwoStyle.height = `${newHeightTwo}px`
+        }, i * ANIMATION_SPEED_MS)
+      }
+    }
+  }
+
+
   testSortingAlgorithm() {
     for(let i=0; i<100; i++) {
       const array = [];
@@ -116,9 +159,9 @@ export class SortingVisualizer extends Component {
 
     return (
       <>
-      <nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <span class="navbar-brand mb-0 h1">Sorting Visualizer</span>
+      <nav className="navbar bg-body-tertiary">
+  <div className="container-fluid">
+    <span className="navbar-brand mb-0 h1">Sorting Visualizer</span>
   </div>
 </nav>
         <div className="array-container" style={{ margin : '10px'}}> 
@@ -132,6 +175,7 @@ export class SortingVisualizer extends Component {
         <div className="container" >
         <button type='button' style={{ margin : '5px'}} className='btn btn-outline-dark' onClick={()=> this.mergeSort()}>Merge Sort Array</button>
         <button type='button' style={{ margin : '5px'}} className='btn btn-outline-dark' onClick={()=> this.bubbleSort()}>Bubble Sort Array</button>
+        <button type='button' style={{ margin : '5px'}} className='btn btn-outline-dark' onClick={()=>this.quickSort()}>Quick Sort</button>
         <button type='button' style={{ margin : '5px'}} className='btn btn-outline-dark' onClick={()=>this.resetArray()}>Generate new Array</button>
         </div>
       </>
